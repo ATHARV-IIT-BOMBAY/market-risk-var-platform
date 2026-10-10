@@ -1,0 +1,6 @@
+.DS_Store
+.claude/
+_dashboard.html
+docs/_payload.json
+__pycache__/
+*.pyc

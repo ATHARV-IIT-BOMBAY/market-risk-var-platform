@@ -1,0 +1,14 @@
+Column / Pattern,Unit / Type,Definition
+Date,date,Trading date; row index.
+Portfolio_Return,decimal,Realised daily portfolio return.
+Portfolio_PnL,₹,Realised daily portfolio profit/loss.
+Start_of_Day_Value,₹,Portfolio value used to convert return VaR to currency.
+GARCH_Vol_Daily,decimal/day,"One-day-ahead GARCH(1,1) conditional volatility using information through t-1."
+GARCH_Vol_Annualized,decimal/year,Daily conditional volatility multiplied by sqrt(252).
+Standardized_Return,sigma units,Return divided by contemporaneous one-day-ahead conditional volatility.
+HS_VaR_<W>d_<CL>_Return,positive decimal,Unscaled Historical Simulation return VaR forecast.
+GARCH_VaR_<W>d_<CL>_Return,positive decimal,"Hull–White GARCH(1,1)-scaled return VaR forecast."
+HS_VaR_<W>d_<CL>,₹,Unscaled HS VaR in currency; positive loss limit.
+GARCH_VaR_<W>d_<CL>,₹,"GARCH(1,1)-scaled HS VaR in currency; positive loss limit."
+HS_Breach_<W>d_<CL>,boolean,True when realised P&L is below negative unscaled VaR.
+GARCH_Breach_<W>d_<CL>,boolean,True when realised P&L is below negative scaled VaR.
