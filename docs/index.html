@@ -248,7 +248,9 @@ const rgba = (h, a) => {
   const n = parseInt(h.slice(1), 16);
   return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`;
 };
-const inr = v => (v < 0 ? "−" : "") + "₹" + Math.round(Math.abs(v)).toLocaleString("en-IN");
+/* Western grouping, not en-IN lakh/crore: the notebooks and README print
+   ₹2,995,852, and the dashboard must not disagree with them. */
+const inr = v => (v < 0 ? "−" : "") + "₹" + Math.round(Math.abs(v)).toLocaleString("en-US");
 const pctv = (v, d = 2) => (100 * v).toFixed(d) + "%";
 
 const baseLayout = () => {
@@ -310,7 +312,8 @@ function sync(){
   for(const b of $("seg-conf").children) b.setAttribute("aria-pressed", b.dataset.c === C);
   const t = `${W}-day lookback · ${D.confLabel[C]} confidence`;
   $("fscope").textContent = "Scoping sections 01–04 · " + t;
-  drawVar(); drawBt(); drawRank(); drawTbl("var"); drawTbl("bt");
+  drawVar(); drawBt(); drawRank();
+  ["var","bt","rank"].forEach(drawTbl);
 }
 
 /* ---------------------------------------------------------------- 01 VaR paths */
@@ -508,8 +511,13 @@ document.querySelectorAll(".toggle").forEach(b => b.onclick = () => {
   if(show) drawTbl(t);
   else redraw();
 });
-function redraw(){ drawVar(); drawVol(); drawBt(); drawRank(); drawStress();
-  ["var","bt","rank","vol","stress","rev"].forEach(drawTbl); }
+/* Sections 05-06 and the volatility panel are absolute: drawn once here, then
+   sync() refreshes everything the filters scope. */
+function redraw(){
+  drawVol(); drawStress();
+  ["vol","stress","rev"].forEach(drawTbl);
+  sync();
+}
 
 $("themebtn").onclick = () => {
   const cur = document.documentElement.getAttribute("data-theme");
@@ -520,7 +528,7 @@ $("themebtn").onclick = () => {
 };
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change", redraw);
 
-hero(); filters(); sync();
+hero(); filters(); redraw();
 </script>
 </body>
 </html>
